@@ -11,31 +11,10 @@ class Calc extends StatefulWidget {
 }
 
 class _CalcState extends State<Calc> {
-  var input = '0';
+  var input = '';
   var answer = '0';
 
-  final List<String> buttons = [
-    'C',
-    '+/-',
-    '%',
-    'DEL',
-    '7',
-    '8',
-    '9',
-    '/',
-    '4',
-    '5',
-    '6',
-    'x',
-    '1',
-    '2',
-    '3',
-    '-',
-    '0',
-    '.',
-    '=',
-    '+',
-  ];
+  final List<String> buttons = ['C', '+/-', '%', 'DEL', '7', '8', '9', '/', '4', '5', '6', 'x', '1', '2', '3', '-', '0', '.', '=', '+'];
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +74,15 @@ class _CalcState extends State<Calc> {
                   // +/- button
                   else if (index == 1) {
                     return CalcButton(
+                      onPressed: () {
+                        setState(() {
+                          if(input.endsWith('(-')) {
+                            input = input.substring(0, input.length -2 );
+                          }else{
+                            input += '(-';
+                          }
+                        });
+                      },
                       buttonText: buttons[index],
                       color: Colors.blue[50],
                       textColor: Colors.black,
@@ -145,7 +133,11 @@ class _CalcState extends State<Calc> {
                     return CalcButton(
                       onPressed: () {
                         setState(() {
-                          input += buttons[index];
+                          if (input.isNotEmpty && input.endsWith('(-')) {
+                            input += '${buttons[index]})';
+                          } else {
+                            input += buttons[index];
+                          }
                         });
                       },
                       buttonText: buttons[index],
